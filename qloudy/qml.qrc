@@ -1,0 +1,38 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>controls/AnimatedText.qml</file>
+        <file>controls/Grid.qml</file>
+        <file>controls/GridSeparator.qml</file>
+        <file>controls/Label.qml</file>
+        <file>controls/TabButton.qml</file>
+        <file>controls/TabView.qml</file>
+        <file>controls/TextButton.qml</file>
+        <file>controls/ToolTip.qml</file>
+        <file>controls/WideRow.qml</file>
+        <file>controls/WToolTip.qml</file>
+        <file>forms/BaseForm.qml</file>
+        <file>forms/MainForm.qml</file>
+        <file>resources/font/Carlito-Bold.ttf</file>
+        <file>resources/font/Carlito-Regular.ttf</file>
+        <file>resources/font/Carlito.LICENSE</file>
+        <file>resources/icons/icon-dark.svg</file>
+        <file>resources/icons/icon-light.svg</file>
+        <file>resources/icons/icon.svg</file>
+        <file>windows/BaseWindow.qml</file>
+        <file>resources/font/Courier Prime Code Italic.ttf</file>
+        <file>resources/font/Courier Prime Code.LICENSE</file>
+        <file>resources/font/Courier Prime Code.ttf</file>
+        <file>forms/WeatherForm.qml</file>
+        <file>forms/ConfigurationForm.qml</file>
+        <file>forms/WeekForecast.qml</file>
+        <file>scripts/weather.js</file>
+        <file>Qloudy.qml</file>
+        <file>controls/Debug.qml</file>
+        <file>controls/ComboBox.qml</file>
+        <file>scripts/citiesCoord.js</file>
+        <file>forms/CurrentWeather.qml</file>
+        <file>controls/effects/Rainy.qml</file>
+        <file>controls/TextField.qml</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,25 @@
+import QtQuick 2.15
+
+Item {
+    id: control
+
+    property color color: '#000'
+    property real length: 28
+    property real fill: 0.7
+    readonly property bool horizontal: (parent.flow ?? 0) === Grid.LeftToRight
+
+    width: horizontal ? 0.00001 : length
+    height: horizontal ? length : 0.0001
+    z: 9
+
+    Rectangle {
+        x: horizontal == true  ? -0.25 : (parent.length - width)/2
+        y: horizontal == false ? -0.25 : (parent.length - height)/2
+
+        width: horizontal ? 0.5 : parent.length * parent.fill
+        height: horizontal ? parent.length * parent.fill : 0.5
+
+        color: parent.color
+        opacity: 0.2
+    }
+}
