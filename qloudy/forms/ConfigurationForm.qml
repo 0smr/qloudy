@@ -14,23 +14,26 @@ BaseForm {
         if(coordinate.lon && coordinate.lat) {
             longitude.input.text = coordinate.lon;
             latitude.input.text = coordinate.lat;
-            settings.coordinate = Qt.point(coordinate.lon, coordinate.lat)
+            coordConfig.coordinate = Qt.point(coordinate.lon, coordinate.lat)
         }
     }
 
     Component.onCompleted: {
-        longitude.input.text = settings.coordinate.x ?? 0;
-        latitude.input.text = settings.coordinate.y ?? 0;
-        tokenInput.input.text = settings.token ?? "";
+        longitude.input.text = coordConfig.coordinate.x ?? 0;
+        latitude.input.text = coordConfig.coordinate.y ?? 0;
+        tokenInput.input.text = coordConfig.token ?? "";
 
-        const province = settings.provinceName
-        const city = settings.cityName
+        const province = coordConfig.provinceName
+        const city = coordConfig.cityName
 
-//        provinceCBox.currentIndex = CitiesCoord.provincesList.indexOf(province) ?? 0
-//        cityCBox.currentIndex = (CitiesCoord.citiesOfProvinceList[province] ?? []).indexOf(city) ?? 0
+// provinceCBox.currentIndex = CitiesCoord.provincesList.indexOf(province) ?? 0
+// cityCBox.currentIndex = (CitiesCoord.citiesOfProvinceList[province] ?? []).indexOf(city) ?? 0
     }
 
     component LabeledInput: Row {
+        id: labeledInput
+        signal accepted()
+
         property alias label: label
         property alias input: textField
 
@@ -48,11 +51,12 @@ BaseForm {
                 bottom: 0; top: 100; decimals: 3
                 notation: DoubleValidator.StandardNotation
             }
+            onAccepted: labeledInput.accepted()
         }
     }
 
     Settings {
-        id: settings
+        id: coordConfig
         category: "Configuration/Coordinate"
         fileName: "config.ini"
 
@@ -74,11 +78,13 @@ BaseForm {
                 id: longitude;
                 input.text: "0.0"
                 label.text: "Longitude:"
+                onAccepted: coordConfig.coordinate = Qt.point(input.text, longitude.input.text)
             }
             LabeledInput {
                 id: latitude;
                 input.text: "0.0"
                 label.text: "Latitude:"
+                onAccepted: coordConfig.coordinate = Qt.point(longitude.input.text, input.text)
             }
         }
 

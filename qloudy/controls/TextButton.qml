@@ -16,8 +16,6 @@ AbstractButton {
     font.family: Qloudy.regularFont.family
     font.bold: hovered
 
-    palette.buttonText: '#444'
-
     contentItem: Text {
         id: text
         height: 10

@@ -17,7 +17,6 @@ T.ComboBox {
 
     editable: true
     selectTextByMouse: true
-    palette { button: '#353637'; buttonText: "#fff"; highlight: '#33000000' }
 
     delegate: ItemDelegate {
         width: ListView.view.width

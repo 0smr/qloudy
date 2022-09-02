@@ -13,8 +13,6 @@ BaseWindow {
     visible: true
     title: qsTr("Qloudy")
 
-//    palette.window: '#fff'
-
     MainForm {
         width: window.width
         height: window.height

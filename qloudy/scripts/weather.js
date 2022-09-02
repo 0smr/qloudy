@@ -1,66 +1,35 @@
-var weatherConditionIcons = {
-    0  : "\uefcc", //"Question mark",
+let weatherIcons = {
+    0  : "\uefcc", //"Default: question mark",
     // Thunderstorm
-    200: "\uee78", //"thunderstorm with light rain",
-    201: "\uee69", //"thunderstorm with rain",
-    202: "\uee69", //"thunderstorm with heavy rain",
-    210: "\uee84", //"light thunderstorm",
-    211: "\uee64", //"thunderstorm",
-    212: "\uee60", //"heavy thunderstorm",
-    221: "\uee60", //"ragged thunderstorm",
-    230: "\uee77", //"thunderstorm with light drizzle",
-    231: "\uee77", //"thunderstorm with drizzle",
-    232: "\uee77", //"thunderstorm with heavy drizzle",
-    // Drizzle
-    300: "\uee5b", //"light intensity drizzle",
-    301: "\uee61", //"drizzle",
-    302: "\uee60", //"heavy intensity drizzle",
-    310: "\uee5c", //"light intensity drizzle rain",
-    311: "\uee5c", //"drizzle rain",
-    312: "\uee5c", //"heavy intensity drizzle rain",
-    313: "\uee5c", //"shower rain and drizzle",
-    314: "\uee5c", //"heavy shower rain and drizzle",
-    321: "\uee61", //"shower drizzle",
-    // Rain
-    500: "\uee6a", //"light rain",
-    501: "\uee6a", //"moderate rain",
-    502: "\uee6a", //"heavy intensity rain",
-    503: "\uee6a", //"very heavy rain",
-    504: "\uee6a", //"extreme rain",
-    511: "\uee73", //"freezing rain",
-    520: "\uee6a", //"light intensity shower rain",
-    521: "\uee6a", //"shower rain",
-    522: "\uee6a", //"heavy intensity shower rain",
-    531: "\uee6a", //"ragged shower rain",
-    // Snow
-    600: "\uee7d", //"light snow",
-    601: "\uee6b", //"Snow",
-    602: "\uee79", //"Heavy snow",
-    611: "\uee79", //"Sleet",
-    612: "\uee79", //"Light shower sleet",
-    613: "\uee79", //"Shower sleet",
-    615: "\uee73", //"Light rain and snow",
-    616: "\uee73", //"Rain and snow",
-    620: "\uee7d", //"Light shower snow",
-    621: "\uee7d", //"Shower snow",
-    622: "\uee7d", //"Heavy shower snow",
-    // Atmosphere
-    701: "\ue89b", //"mist",
-    711: "\uee56", //"Smoke",
-    721: "\ue89b", //"Haze",
-    731: "\uee9f", //"sand/ dust whirls",
-    761: "\uee53", //"dust",
-    741: "\ue89b", //"fog",
-    751: "\uee9f", //"sand",
-    762: "\uee88", //"volcanic ash",
-    771: "\uee64", //"squalls",
-    781: "\uee85", //"tornado",
-    // Clear
-    800: "\uee7e", //"clear sky",
-    // Clouds
-    801: "\uee51", //"few clouds: 11-25%",
-    802: "\uee51", //"scattered clouds: 25-50%",
-    803: "\uee52", //"broken clouds: 51-84%",
-    804: "\uee52"  //"overcast clouds: 85-100%"
+    1 : { // Day
+        // Thunderstorm
+        200: "\uee78", 201: "\uee69", 202: "\uee69", 210: "\uee84", 211: "\uee64",
+        212: "\uee60", 221: "\uee60", 230: "\uee77", 231: "\uee77", 232: "\uee77",
+        // Drizzle
+        300: "\uee5b", 301: "\uee61", 302: "\uee60", 310: "\uee5c", 311: "\uee5c",
+        312: "\uee5c", 313: "\uee5c", 314: "\uee5c", 321: "\uee61",
+        // Rain
+        500: "\uee6a", 501: "\uee6a", 502: "\uee6a", 503: "\uee6a", 504: "\uee6a",
+        511: "\uee73", 520: "\uee6a", 521: "\uee6a", 522: "\uee6a", 531: "\uee6a",
+        // Snow
+        600: "\uee7d", 601: "\uee6b", 602: "\uee79", 611: "\uee79", 612: "\uee79",
+        613: "\uee79", 615: "\uee73", 616: "\uee73", 620: "\uee7d", 621: "\uee7d", 622: "\uee7d",
+        // Atmosphere
+        701: "\ue89b", 711: "\uee56", 721: "\ue89b", 731: "\uee9f", 761: "\uee53",
+        741: "\ue89b", 751: "\uee9f", 762: "\uee88", 771: "\uee64", 781: "\uee85",
+        // Clear
+        800: "\uee7e",
+        // Cloudy
+        801: "\uee51", 802: "\uee51", 803: "\uee52", 804: "\uee52"
+    },
+    "-1": { // Night
+        800: "\uef9e",
+    }
+}
+
+function icon(code, day = true) {
+    return weatherIcons[day ? 1 : -1][code] ??
+           weatherIcons[day ? -1 : 1][code] ?? // try opposite.
+           weatherIcons[0]; // default icon
 }
 

@@ -7,18 +7,14 @@ import Qloudy 0.1
 import qloudy.network.weather 0.1
 
 import '../controls'
-import '../scripts/weather.js' as WeatherConditions
+import '../scripts/weather.js' as WeatherIcons
+import '../scripts/utils.js' as Utils
 
 BaseForm {
     id: form
 
     property string token: { visible; coordConfig.value("token") }
     property point coordinate: { visible; coordConfig.value("coordinate") }
-
-    function utcToDayOfWeek(utc = 0) {
-        const weekday =["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-        return weekday[(new Date(utc)).getDay()];
-    }
 
     height: Math.max(weekForecast.contentHeight, (weekForecast.currentItem ?? {}).height)
 
@@ -47,9 +43,6 @@ BaseForm {
         id: coordConfig
         category: "Configuration/Coordinate"
         fileName: "config.ini"
-
-        property string token
-        property point coordinate
     }
 
     Settings {
@@ -119,10 +112,8 @@ BaseForm {
                     const windSpeed = noon.wind.speed;
                     const windDeg = noon.wind.deg;
 
-                    print(morning.dt)
-
                     weekForecastModel.set(i, {
-                        wday: utcToDayOfWeek(morning.dt*1000),
+                        wday: Utils.utcDayOfWeek(morning.dt),
                         description: description,
                         conditionCode: conditionCode,
                         tmin: minTemp, tmax: maxTemp,
@@ -159,9 +150,6 @@ BaseForm {
                 width: weekForecast.vertical ? weekForecast.width : implicitWidth
                 padding: 10
 
-                palette.button: '#22000000'
-                palette.buttonText: '#000'
-
                 background: Rectangle {
                     color: palette.button
                     radius: 5
@@ -175,7 +163,7 @@ BaseForm {
                     verticalItemAlignment: Grid.AlignVCenter
 
                     Label {
-                        text: WeatherConditions.weatherConditionIcons[model.conditionCode] ?? ""
+                        text: WeatherIcons.icon(model.conditionCode)
                         font: {
                             font = Qloudy.iconFont.family
                             font.pointSize = weekForecast.vertical ? 13 : 20

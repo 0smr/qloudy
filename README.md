@@ -1,17 +1,21 @@
 # <img src="extra/logo/logo.svg" width="35px"></img> Qloudy
-<img src="https://img.shields.io/badge/version-0.1.0-37c248"><br>
+<img src="https://img.shields.io/badge/version-0.1.1-37c248"><br>
 
 Qloudy is a Qt based gui weather application which uses the [open weather map](https://openweathermap.org) free API.
 
-Note: *Take notice that this software was just used as a task to apply for a job.*
-
 <div align="center">
     <img src="extra/logo/logo.svg" width="200px" height="100px"> <br>
-    <i>Qloudy <sub>free gui using openweather api</sub></i>
+    <i>Qloudy <sub>A free openweather-based GUI app.</sub></i>
 </div>
 <br>
 
 <!-- # Preview -->
+
+## Notes <sub><small>*some important notes*</small></sub>
+1. *The [IcoFont](https://icofont.com) isn't included in the app resource since a custom icon font will be added in the future; **if an icon is missing**, install the font locally.*
+2. *You may need to set a custom **scale factor** on the environment since this app uses pixels for component size.*<br>
+   Like this: `QT_SCALE_FACTOR=2 ./qloudy`
+3. *This app might be bit buggy as it isn't yet in a stable state.*
 
 ## Building from source
 
@@ -29,10 +33,10 @@ git clone --recursive https://github.com/SMR76/qloudy.git
 
 **‌Build**
 ```bash
-cd knight-pen
+cd qloudy
 mkdir build
 cd build
-qmake CONFIG+=release ../src/qloudy/
+qmake CONFIG+=release ../qloudy/qloudy/
 make
 ```
 
@@ -64,14 +68,19 @@ tables.forEach((table, idx) => {
 </details>
 
 ## TO-DO
-- [ ] App Specific icon set.
-- [ ] Clean files and codes.
+- [ ] Custom set of icons.
+- [ ] Clean files.
 - [ ] Add tooltip.
 - [ ] Add tray icon.
-- [ ] Weather condition effect.
-- [ ] Data chart.
-- [ ] Add previews to `README`.
-- [ ] Add *contribution* template.
+- [ ] Add more weather condition effects.
+- [ ] Add data chart.
+- [ ] Add preview images to `README`.
+- [ ] Add *contribution* note.
+- [ ] Fix scale factor.
+- [ ] Add time based theme.
 
 ## Dependencies
 - [Qt](https://www.qt.io) (LGPLV3) <sub>Core & GUI</sub>
+
+## References
+- [Unsplash.com](https://unsplash.com) ([Unsplash License](https://unsplash.com/license)) <sub>background images</sub>

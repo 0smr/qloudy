@@ -50,7 +50,7 @@ T.TextField {
         Rectangle {
             y: parent.height - 1
             width: parent.width; height: 1
-            color: '#000'; opacity: 0.2
+            color: control.palette.windowText
         }
     }
 }

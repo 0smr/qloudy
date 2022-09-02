@@ -12,8 +12,6 @@ AbstractButton {
 
     display: AbstractButton.IconOnly
 
-    palette.buttonText: '#444'
-
     checkable: true
     autoExclusive: true
     checked: (parent.currentIndex ?? 0)  === Positioner.index
@@ -26,11 +24,12 @@ AbstractButton {
     background: Item {}
 
     contentItem: Row {
-        opacity: control.checked ? 1.0 : 0.2
+        opacity: control.checked ? 1.0 : 0.4
         spacing: icon.visible && text.visible ? control.spacing : 0
         Text {
             id: icon
             text: ""
+            color: control.palette.buttonText
             visible:(control.display == AbstractButton.IconOnly ||
                      control.display == AbstractButton.TextBesideIcon) && text;
         }

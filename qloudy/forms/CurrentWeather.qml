@@ -7,7 +7,8 @@ import Qloudy 0.1
 import qloudy.network.weather 0.1
 
 import '../controls'
-import '../scripts/weather.js' as WeatherConditions
+import '../scripts/weather.js' as WeatherIcons
+import '../scripts/utils.js' as Utils
 
 BaseForm {
     id: form
@@ -21,8 +22,10 @@ BaseForm {
     property real windSpeed: 0.0
     property real windDeg: 0.0
 
+    property string city: ""
+
     // A tricky technique to have properties read settings info from the most recent update.
-    property string city: { visible; coordConfig.value("city") }
+//    property string city: { visible; coordConfig.value("city") }
     property string province: { visible; coordConfig.value("province") }
     property string token: { visible; coordConfig.value("token") }
     property point coordinate: { visible; coordConfig.value("coordinate") }
@@ -32,20 +35,10 @@ BaseForm {
         timer.restart();
     }
 
-    function dayOfWeek() {
-        const weekday =["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-        return weekday[(new Date()).getDay()];
-    }
-
     Settings {
         id: coordConfig
         category: "Configuration/Coordinate"
         fileName: "config.ini"
-
-        property string city
-        property string province
-        property string token
-        property point coordinate
     }
 
     Settings {
@@ -54,6 +47,7 @@ BaseForm {
         fileName: "config.ini"
 
         property real lastUpdate
+        property alias city: form.city
         property alias description: form.description
         property alias conditionCode: form.conditionCode
         property alias currentTemp: form.currentTemp
@@ -78,6 +72,7 @@ BaseForm {
                 form.maxTemp = data.main.temp_max - 273.15;
                 form.windSpeed = data.wind.speed;
                 form.windDeg = data.wind.deg;
+                form.city = data.name;
             }
         }
 
@@ -114,14 +109,20 @@ BaseForm {
     contentItem: Grid {
         horizontalItemAlignment: Grid.AlignHCenter
 
+        Label {
+            text: `lon: ${form.coordinate.x} | lat: ${form.coordinate.y}`
+            font.pointSize: 6
+            opacity: 0.5
+        }
+
         Grid {
             horizontalItemAlignment: Grid.AlignHCenter
             Label { text: form.city || "?"; font: Qloudy.headFont }
-            Label { text: form.province || ""; font.pointSize: 8 }
+//            Label { text: form.province || ""; font.pointSize: 8 }
         }
 
         Label {
-            text: WeatherConditions.weatherConditionIcons[form.conditionCode]
+            text: WeatherIcons.icon(form.conditionCode, Utils.isDay())
             font: { font = Qloudy.iconFont; font.pointSize = 50 }
             renderType: Label.NativeRendering
         }
@@ -146,7 +147,7 @@ BaseForm {
 
         Row {
             spacing: 5
-            Label { text: form.dayOfWeek() + " -"; font: Qloudy.regularFont }
+            Label { text: Utils.dayOfWeek() + " -"; font: Qloudy.regularFont }
             Label { text: form.description; font: Qloudy.regularFont }
         }
     }
