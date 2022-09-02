@@ -6,7 +6,7 @@
         <file>controls/GridSeparator.qml</file>
         <file>controls/Label.qml</file>
         <file>controls/TabButton.qml</file>
-        <file>controls/TabView.qml</file>
+        <file>controls/TabLayout.qml</file>
         <file>controls/TextButton.qml</file>
         <file>controls/ToolTip.qml</file>
         <file>controls/WideRow.qml</file>
@@ -34,5 +34,22 @@
         <file>forms/CurrentWeather.qml</file>
         <file>controls/effects/Rainy.qml</file>
         <file>controls/TextField.qml</file>
+        <file>controls/effects/shaders/rainy.frag</file>
+        <file>forms/BackgroundTheme.qml</file>
+        <file>resources/backgrounds/ash.webp</file>
+        <file>resources/backgrounds/clear-night-2.webp</file>
+        <file>resources/backgrounds/clear-night.webp</file>
+        <file>resources/backgrounds/clear.webp</file>
+        <file>resources/backgrounds/cloudy-2.webp</file>
+        <file>resources/backgrounds/cloudy-night.webp</file>
+        <file>resources/backgrounds/cloudy.webp</file>
+        <file>resources/backgrounds/dark-cloud.webp</file>
+        <file>resources/backgrounds/dust-2.webp</file>
+        <file>resources/backgrounds/dust.webp</file>
+        <file>resources/backgrounds/fog.webp</file>
+        <file>resources/backgrounds/snowy.webp</file>
+        <file>resources/backgrounds/storm.webp</file>
+        <file>resources/backgrounds/tornado.webp</file>
+        <file>scripts/utils.js</file>
     </qresource>
 </RCC>

@@ -12,7 +12,7 @@ Row {
     default property alias items: stacklayout.children
     property alias tabs: repeater.model
     property alias currentIndex: sideBar.currentIndex
-    property real wideThreshold: 600
+    property real sidebarThreshold: 600
 
     spacing: 5
     padding: 5
@@ -37,7 +37,7 @@ Row {
 
                     font: Qloudy.regularFont
 
-                    display: control.width < control.wideThreshold ? TabButton.IconOnly : TabButton.TextBesideIcon
+                    display: control.width < control.sidebarThreshold ? TabButton.IconOnly : TabButton.TextBesideIcon
                     width: implicitWidth
                 }
             }

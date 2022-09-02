@@ -11,23 +11,15 @@ import '../controls'
 BaseForm {
     id: form
 
-    property int mainWeatherConditionCode: currentWeather.conditionCode / 100
-
-    background: Image {
-        id: backgroundImage
-        source: {
-            const images = [
-                "", // 1
-                "", // 2
-                "", // 3
-                "", // 4
-            ];
-
-            return images[mainWeatherConditionCode] ?? "";
+    property Item back:
+        BackgroundTheme {
+            contentY: flickable.contentY
+            conditionCode: currentWeather.conditionCode
         }
-    }
 
     Flickable {
+        id: flickable
+
         anchors.fill: parent
         contentWidth: grid.width
         contentHeight: grid.height

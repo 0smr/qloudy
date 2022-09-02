@@ -8,9 +8,21 @@ import '../controls'
 
 BaseForm {
     id: form
-    palette.button: 'red'
 
-    TabView {
+    palette {
+        button: '#33ffffff'
+        buttonText: '#fff'
+
+        window: '#55000000'
+        windowText: '#fff'
+
+        highlight: '#33ffffff'
+        highlightedText: '#fff'
+    }
+
+    background: weatherForm.back
+
+    TabLayout {
         id: tabView
 
         clip: true
@@ -23,7 +35,7 @@ BaseForm {
             { text:'Configuration', icon: '\uef39'},
         ]
 
-        WeatherForm { }
+        WeatherForm { id: weatherForm }
         ConfigurationForm { }
     }
 }
