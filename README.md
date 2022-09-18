@@ -1,5 +1,5 @@
 # <img src="extra/logo/logo.svg" width="35px"></img> Qloudy
-<img src="https://img.shields.io/badge/version-0.1.1-37c248"><br>
+<img src="https://img.shields.io/badge/version-0.2.0-37c248"><br>
 
 Qloudy is a Qt based gui weather application which uses the [open weather map](https://openweathermap.org) free API.
 
@@ -11,11 +11,10 @@ Qloudy is a Qt based gui weather application which uses the [open weather map](h
 
 <!-- # Preview -->
 
-## Notes <sub><small>*some important notes*</small></sub>
-1. *The [IcoFont](https://icofont.com) isn't included in the app resource since a custom icon font will be added in the future; **if an icon is missing**, install the font locally.*
-2. *You may need to set a custom **scale factor** on the environment since this app uses pixels for component size.*<br>
+## Notes <sub><small>*some important notes*!!</small></sub>
+1. *You may need to set a custom **scale factor** on the environment since this app uses pixels for component size.*<br>
    Like this: `QT_SCALE_FACTOR=2 ./qloudy`
-3. *This app might be bit buggy as it isn't yet in a stable state.*
+2. *This app might be bit buggy as it isn't yet in a stable state.*
 
 ## Building from source
 
@@ -68,16 +67,12 @@ tables.forEach((table, idx) => {
 </details>
 
 ## TO-DO
-- [ ] Custom set of icons.
-- [ ] Clean files.
 - [ ] Add tooltip.
-- [ ] Add tray icon.
 - [ ] Add more weather condition effects.
 - [ ] Add data chart.
 - [ ] Add preview images to `README`.
 - [ ] Add *contribution* note.
 - [ ] Fix scale factor.
-- [ ] Add time based theme.
 
 ## Dependencies
 - [Qt](https://www.qt.io) (LGPLV3) <sub>Core & GUI</sub>
