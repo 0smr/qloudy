@@ -1,0 +1,3 @@
+[submodule "extra/icons/icon-manager"]
+	path = extra/icons/icon-manager
+	url = https://github.com/smr76/icon-manager
