@@ -1,7 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Templates 2.15 as T
 
-import Qloudy 0.1
+import qloudy.globals 0.1
 
 T.TextField {
     id: control
@@ -12,7 +12,7 @@ T.TextField {
                              contentHeight + topPadding + bottomPadding,
                              placeholder.implicitHeight + topPadding + bottomPadding)
 
-    font: Qloudy.regularFont
+    font: Fonts.regular
     selectByMouse: true
     horizontalAlignment: TextInput.AlignHCenter
 

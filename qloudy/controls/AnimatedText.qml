@@ -1,6 +1,6 @@
 import QtQuick 2.12
 
-import Qloudy 0.1
+import qloudy.globals 0.1
 
 Item {
     id: control
@@ -53,6 +53,6 @@ Item {
     Text {
         id: displayText
         width: parent.width
-        font: Qloudy.monoFont
+        font: Fonts.mono
     }
 }

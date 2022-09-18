@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
 
-import Qloudy 0.1
+import qloudy.globals 0.1
 
 import '.'
 
@@ -32,10 +32,10 @@ Row {
                 id: repeater
                 TabButton {
                     text: modelData.text ?? modelData
-                    iconx.font: Qloudy.iconFont
+                    iconx.font: Fonts.icon
                     iconx.text: modelData.icon ?? ""
 
-                    font: Qloudy.regularFont
+                    font: Fonts.regular
 
                     display: control.width < control.sidebarThreshold ? TabButton.IconOnly : TabButton.TextBesideIcon
                     width: implicitWidth

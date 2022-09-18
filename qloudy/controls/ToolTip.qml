@@ -1,13 +1,13 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15 as QQC
 
-import Qloudy 0.1
+import qloudy.globals 0.1
 
 QQC.ToolTip {
     id: control
     delay: 500
     timeout: 2500
-    font: Qloudy.regularFont
+    font: Fonts.regular
     palette.toolTipText: 'gray'
 
     background: Rectangle {

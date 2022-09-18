@@ -1,7 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-import Qloudy 0.1
+import qloudy.globals 0.1
 
 AbstractButton {
     id: control
@@ -13,7 +13,7 @@ AbstractButton {
     padding: 0
     hoverEnabled: true
 
-    font.family: Qloudy.regularFont.family
+    font.family: Fonts.regular.family
     font.bold: hovered
 
     contentItem: Text {

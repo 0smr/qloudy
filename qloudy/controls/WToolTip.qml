@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Window 2.15
 
-import Qloudy 0.1
+import qloudy.globals 0.1
 
 Item {
     id: control
@@ -13,7 +13,7 @@ Item {
     property alias background: innerControl.background
 
     property string text: ''
-    property font font: Qloudy.regularFont
+    property font font: Fonts.regular
     property real offset: 0
     property real align: Qt.AlignRight
 
