@@ -45,16 +45,17 @@ Item {
 
     Image {
         id: backgroundImage
-        y: -control.contentY * 0.2
+        y: -Math.min(control.contentY * 0.5, 50)
         width: parent.width
         height: parent.height + 50
 
         fillMode: Image.PreserveAspectCrop
 
         source: {
-            const time = Utils.isDay() ? 1 : -1;
-            return control.themes[time][control.mainCode] ??
-                   control.themes[-time][0]; // If there was no theme
+            const day = Utils.isDay() ? 1 : -1;
+            return control.themes[day][control.mainCode] ??
+                   control.themes[-day][control.mainCode] ?? // try opposite.
+                   control.themes[day][0]; // default theme
         }
     }
 }

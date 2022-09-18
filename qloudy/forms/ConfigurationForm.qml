@@ -2,37 +2,36 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import Qt.labs.settings 1.1
 
-import Qloudy 0.1
+import qloudy 0.1
+import qloudy.globals 0.1
 
 import '../controls'
-import '../scripts/citiesCoord.js' as CitiesCoord
 
 BaseForm {
     id: form
+
+    property var provinces: Utils.readJsonFile(":/resources/data/iran-province.json")
+    property var citiesCoord: Utils.readJsonFile(":/resources/data/iran-cities-coord.json")
 
     function setCoordinate(coordinate) {
         if(coordinate.lon && coordinate.lat) {
             longitude.input.text = coordinate.lon;
             latitude.input.text = coordinate.lat;
-            coordConfig.coordinate = Qt.point(coordinate.lon, coordinate.lat)
+            Weather.coordinate = Qt.point(coordinate.lon, coordinate.lat)
         }
     }
 
     Component.onCompleted: {
-        longitude.input.text = coordConfig.coordinate.x ?? 0;
-        latitude.input.text = coordConfig.coordinate.y ?? 0;
-        tokenInput.input.text = coordConfig.token ?? "";
-
-        const province = coordConfig.provinceName
-        const city = coordConfig.cityName
-
-// provinceCBox.currentIndex = CitiesCoord.provincesList.indexOf(province) ?? 0
-// cityCBox.currentIndex = (CitiesCoord.citiesOfProvinceList[province] ?? []).indexOf(city) ?? 0
+        longitude.input.text = Weather.coordinate.x ?? 0;
+        latitude.input.text = Weather.coordinate.y ?? 0;
+        tokenInput.input.text = Weather.token ?? "";
+        provincesList.currentIndex = Weather.provinceIndex ?? 0
+        citiesList.currentIndex = Weather.cityIndex ?? 0
     }
 
     component LabeledInput: Row {
         id: labeledInput
-        signal accepted()
+        signal edited()
 
         property alias label: label
         property alias input: textField
@@ -51,19 +50,8 @@ BaseForm {
                 bottom: 0; top: 100; decimals: 3
                 notation: DoubleValidator.StandardNotation
             }
-            onAccepted: labeledInput.accepted()
+            onTextEdited: labeledInput.edited()
         }
-    }
-
-    Settings {
-        id: coordConfig
-        category: "Configuration/Coordinate"
-        fileName: "config.ini"
-
-        property string token: tokenInput.input.text ?? ""
-        property string city: cityCBox.currentText ?? ""
-        property string province: provinceCBox.currentValue ?? ""
-        property point coordinate
     }
 
     Grid {
@@ -78,33 +66,13 @@ BaseForm {
                 id: longitude;
                 input.text: "0.0"
                 label.text: "Longitude:"
-                onAccepted: coordConfig.coordinate = Qt.point(input.text, longitude.input.text)
+                onEdited: Weather.coordinate = Qt.point(input.text, longitude.input.text)
             }
             LabeledInput {
                 id: latitude;
                 input.text: "0.0"
                 label.text: "Latitude:"
-                onAccepted: coordConfig.coordinate = Qt.point(longitude.input.text, input.text)
-            }
-        }
-
-        WideRow {
-            width: Math.min(parent.width - 10, 450)
-            ComboBox {
-                id: provinceCBox
-                font: { font = Qloudy.regularFont; font.pointSize = 8 }
-                model: CitiesCoord.provincesList
-            }
-
-            ComboBox {
-                id: cityCBox
-                textRole: "city"
-                valueRole: "crd"
-                font: { font = Qloudy.regularFont; font.pointSize = 8 }
-                model: CitiesCoord.citiesDict[provinceCBox.currentValue] ?? []
-
-                onAccepted: form.setCoordinate(currentValue ?? {})
-                onActivated: form.setCoordinate(currentValue ?? {})
+                onEdited: Weather.coordinate = Qt.point(longitude.input.text, input.text)
             }
         }
 
@@ -112,6 +80,54 @@ BaseForm {
             id: tokenInput
             label.text: "Token:"
             input.validator: null
+            onEdited: Weather.token = input.text
+        }
+
+        WideRow {
+            width: Math.min(parent.width - 10, 450)
+
+            Tumbler { id: provincesList
+                property var currentValue: currentItem.text
+
+                width: 150; height: 90
+                model: form.provinces
+                wrap: false
+                visibleItemCount: 5
+                delegate: Text {
+                    font: Fonts.regular
+                    color: form.palette.windowText
+                    width: implicitWidth; height: font.pixelSize * 1.5
+                    horizontalAlignment: Text.AlignHCenter
+                    opacity: 0.5 + (2 - Math.abs(Tumbler.displacement))/4
+                    text: modelData
+                }
+                onCurrentIndexChanged: Weather.provinceIndex = currentIndex || Weather.provinceIndex
+            }
+
+            Tumbler { id: citiesList
+                property var currentValue: cities[currentIndex]
+                property var cities: form.citiesCoord[provincesList.currentValue ?? ""]
+
+                width: 150; height: 90
+                model: cities
+                wrap: false
+                visibleItemCount: 5
+                delegate: Text {
+                    font: Fonts.regular
+                    color: form.palette.windowText
+                    width: implicitWidth; height: font.pixelSize * 1.5
+                    horizontalAlignment: Text.AlignHCenter
+                    opacity: 0.5 + Math.pow((2 - Math.abs(Tumbler.displacement))/2,2)
+                    text: modelData["city"] ?? ""
+                }
+
+                onMovingChanged: {
+                    if(!moving && !provincesList.moving) {
+                        form.setCoordinate((cities[currentIndex] ?? {})["crd"] ?? {});
+                    }
+                }
+                onCurrentIndexChanged: Weather.cityIndex = currentIndex || Weather.cityIndex
+            }
         }
     }
 }

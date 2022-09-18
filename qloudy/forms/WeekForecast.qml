@@ -1,10 +1,11 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
+import QtQml 2.15
 import Qt.labs.settings 1.1
 
-import Qloudy 0.1
-import qloudy.network.weather 0.1
+import qloudy 0.1
+import qloudy.globals 0.1
 
 import '../controls'
 import '../scripts/weather.js' as WeatherIcons
@@ -13,49 +14,22 @@ import '../scripts/utils.js' as Utils
 BaseForm {
     id: form
 
-    property string token: { visible; coordConfig.value("token") }
-    property point coordinate: { visible; coordConfig.value("coordinate") }
-
     height: Math.max(weekForecast.contentHeight, (weekForecast.currentItem ?? {}).height)
 
-    onCoordinateChanged: {
-        timer.force = true; // In case of coordinate change, force update.
-        timer.restart();
-    }
+    property alias requestHandler: requestHandler
 
-    Component.onCompleted: {
-        // Initial data to fill model.
-        const initData = { wday: '-', description: '-', conditionCode: 0,
-                           tmin: 0, tmax: 0, windSpeed: 0, windDeg: 0 };
-        // Read data from settings as json.
-        const array = JSON.parse(weatherData.value("forecastData") ?? "[]");
-        // Assing array to model.
-        weekForecastModel.fromArray(array.length ? array : Array(5).fill(initData));
-    }
-
-    Component.onDestruction: {
-        // Save data on destruction.
-        const array = weekForecastModel.toArray();
-        weatherData.setValue("forecastData", JSON.stringify(array));
-    }
-
-    Settings {
-        id: coordConfig
-        category: "Configuration/Coordinate"
-        fileName: "config.ini"
-    }
-
-    Settings {
-        id: weatherData
-        category: "Configuration/WeatherData/Forecast"
-        fileName: "config.ini"
-
-        property real lastUpdate
-        property string forecastData
+    Connections {
+        target: Weather
+        function onCoordinateChanged() {
+            requestHandler.updateWeather();
+        }
     }
 
     ListModel {
         id: weekForecastModel
+
+        signal updated()
+
         function toArray() {
             return Array.from({length: count}, (x,i) => get(i));
         }
@@ -63,38 +37,49 @@ BaseForm {
         function fromArray(array) { // update model data from array.
             array.forEach((x, i) => { if(i<count) set(i, x); else append(x); });
         }
+
+        onUpdated: {
+            Weather.forecastData = JSON.stringify(toArray());
+        }
+
+        Component.onCompleted: {
+            // Initial data to fill model.
+            const initData = { wday: '-', description: '-', conditionCode: 0,
+                               tmin: 0, tmax: 0, windSpeed: 0, windDeg: 0 };
+            const array = JSON.parse(Weather.forecastData || "[]");
+            // Assing array to model.
+            fromArray(array.length ? array : Array(5).fill(initData));
+        }
     }
 
     Timer {
-        id: timer
-        property bool force: false
-
         running: true
         triggeredOnStart: true
-        interval: 1 * 60 * 60 * 1000 // Will trigger every hour.
-
+        interval: 1 * 60 * 60 * 1000 // Will trigger every one hour.
         onTriggered: {
-            const coordinate = form.coordinate;
-            const token = form.token;
-            // If it has been more than 10 hours since the last update, renew the forecast data..
-            const isOld = Date.now() - weatherData.lastUpdate < 36000000;
-
-            if(token && coordinate.x && coordinate.y && (isOld || force)) {
-                const request = `https://api.openweathermap.org/data/2.5/forecast?` +
-                                `lon=${coordinate.x}&lat=${coordinate.y}&appid=${token}&lang=fa`;
-                fiveDayWeather.getRequest(request);
-
-                weatherData.lastUpdate = Date.now(); // Update lastUpdate time.
-                force = false; // Remove force flag.
+            // If it has been more than 10 hours since the last update, renew the forecast data.
+            if(Date.now() - Weather.forecastLastUpdate > 36000000) {
+                requestHandler.updateWeather();
             }
         }
     }
 
     RequestHandler {
-        id: fiveDayWeather
+        id: requestHandler
+
+        function updateWeather() {
+            const coordinate = Weather.coordinate;
+            const token = Weather.token;
+            if(token && coordinate.x && coordinate.y) {
+                const request = `https://api.openweathermap.org/data/2.5/forecast?` +
+                                `lon=${coordinate.x}&lat=${coordinate.y}&appid=${token}&lang=fa`;
+                getRequest(request);
+            }
+        }
 
         onFinished: {
-            let data = JSON.parse(response)
+            let data = {};
+            try { data = JSON.parse(response) } catch(e) {}
             if(data.cod === "200") { // If there was no error
                 const count  = Math.min(weekForecastModel.count, (data.cnt ?? 0)/8);
                 const list = data.list;
@@ -113,13 +98,15 @@ BaseForm {
                     const windDeg = noon.wind.deg;
 
                     weekForecastModel.set(i, {
-                        wday: Utils.utcDayOfWeek(morning.dt),
+                        wday: Utils.dayOfWeekString(Weather.timezoneOffset, morning.dt),
                         description: description,
                         conditionCode: conditionCode,
                         tmin: minTemp, tmax: maxTemp,
                         windSpeed: windSpeed, windDeg: windDeg
                     });
                 }
+                weekForecastModel.updated()
+                Weather.forecastLastUpdate = Date.now(); // Renew last update time.
             }
         }
 
@@ -134,7 +121,7 @@ BaseForm {
             spacing: 5
             anchors.centerIn: parent
 
-            width: !vertical ? Math.min(form.width, contentWidth) : form.width
+            width: {form.visible; !vertical ? Math.min(form.width, contentWidth) : form.width}
             height: vertical ? contentHeight : (currentItem ?? {}).height
 
             property bool vertical: form.width < 300
@@ -142,9 +129,9 @@ BaseForm {
 
             model: weekForecastModel
 
-            boundsBehavior: Flickable.OvershootBounds
-            preferredHighlightBegin:  0.5
-            preferredHighlightEnd:  0.5
+            maximumFlickVelocity: 350
+            preferredHighlightBegin: 0.5
+            preferredHighlightEnd: 0.5
 
             delegate: Control {
                 width: weekForecast.vertical ? weekForecast.width : implicitWidth
@@ -165,7 +152,7 @@ BaseForm {
                     Label {
                         text: WeatherIcons.icon(model.conditionCode)
                         font: {
-                            font = Qloudy.iconFont.family
+                            font = Fonts.icon.family
                             font.pointSize = weekForecast.vertical ? 13 : 20
                         }
                     }
@@ -175,12 +162,12 @@ BaseForm {
                         spacing: 5
                         Label {
                             font.pointSize: 10
-                            text: (model.tmin - 273.15).toFixed(1) + '\u00B0'
+                            text: (model.tmin - 273.15).toFixed(1) + '\u00b0'
                         }
                         Label {
                             topPadding: 5
-                            font: { font = Qloudy.regularFont; font.pointSize = 8 }
-                            text: (model.tmax - 273.15).toFixed(1) + '\u00B0'
+                            font: { font = Fonts.regular; font.pointSize = 8 }
+                            text: (model.tmax - 273.15).toFixed(1) + '\u00b0'
                         }
                     }
 
@@ -188,7 +175,7 @@ BaseForm {
 
                     Row {
                         Label { text: model.windSpeed.toFixed() + 'mps' }
-                        Label { text: "\uea5e"; rotation: model.windDeg; font: Qloudy.iconFont }
+                        Label { text: "\ue133"; rotation: model.windDeg; font: Fonts.icon }
                     }
                 }
             }

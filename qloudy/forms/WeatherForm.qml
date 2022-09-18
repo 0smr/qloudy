@@ -3,8 +3,7 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import Qt.labs.settings 1.1
 
-import Qloudy 0.1
-import qloudy.network.weather 0.1
+import qloudy.globals 0.1
 
 import '../controls'
 
@@ -14,8 +13,15 @@ BaseForm {
     property Item back:
         BackgroundTheme {
             contentY: flickable.contentY
-            conditionCode: currentWeather.conditionCode
+            conditionCode: Weather.conditionCode
         }
+
+    BusyIndicator {
+        width: 25
+        height: width
+        running: currentWeather.requestHandler.processing ||
+                 weekForecast.requestHandler.processing
+    }
 
     Flickable {
         id: flickable
@@ -41,6 +47,7 @@ BaseForm {
             }
 
             WeekForecast {
+                id: weekForecast
                 width: parent.width - parent.padding * 2
             }
         }
