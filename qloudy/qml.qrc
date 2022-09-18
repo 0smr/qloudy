@@ -27,10 +27,8 @@
         <file>forms/ConfigurationForm.qml</file>
         <file>forms/WeekForecast.qml</file>
         <file>scripts/weather.js</file>
-        <file>Qloudy.qml</file>
         <file>controls/Debug.qml</file>
         <file>controls/ComboBox.qml</file>
-        <file>scripts/citiesCoord.js</file>
         <file>forms/CurrentWeather.qml</file>
         <file>controls/effects/Rainy.qml</file>
         <file>controls/TextField.qml</file>
@@ -51,5 +49,12 @@
         <file>resources/backgrounds/storm.webp</file>
         <file>resources/backgrounds/tornado.webp</file>
         <file>scripts/utils.js</file>
+        <file>resources/data/iran-cities-coord.json</file>
+        <file>resources/data/iran-province.json</file>
+        <file>globals/Theme.qml</file>
+        <file>globals/Weather.qml</file>
+        <file>controls/BusyIndicator.qml</file>
+        <file>globals/Fonts.qml</file>
+        <file>resources/font/qloudy-icon.ttf</file>
     </qresource>
 </RCC>

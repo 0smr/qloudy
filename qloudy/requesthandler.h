@@ -16,6 +16,8 @@ class requestHandler : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool processing READ processing NOTIFY processingChanged)
     Q_PROPERTY(Status status READ status NOTIFY statusChanged RESET resetStatus)
+    QML_NAMED_ELEMENT(RequestHandler)
+    QML_ADDED_IN_MINOR_VERSION(1)
 public:
     enum Status {
         Error = -1, None, Pending, Processing, Completed,
@@ -23,7 +25,7 @@ public:
     Q_ENUM(Status)
 
     explicit requestHandler(QObject *parent = nullptr)
-        : QObject{parent} {
+        : QObject{parent}, mProcessing(false), mStatus(Status::None) {
 //        mNetworkManager.setAutoDeleteReplies(true);
     }
 
@@ -35,6 +37,7 @@ public:
 
         setStatus(Status::None);
         req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+        req.setTransferTimeout(5000); // 5 second
 
         mReply = mNetworkManager.get(req);
         setStatus(Status::Pending);
@@ -58,6 +61,8 @@ public:
         if(mStatus == newStatus) return;
         mStatus = newStatus;
         emit statusChanged();
+        setProcessing(newStatus == Pending ||
+                      newStatus == Processing);
     }
 
 public slots:
@@ -80,6 +85,7 @@ public slots:
     void abort() {
         mReply->abort();
         emit aborted();
+        setStatus(Status::None);
     }
 
     void resetStatus() {
@@ -104,7 +110,7 @@ private:
 };
 
 static void registerRequestHandlerType() {
-    qmlRegisterType<requestHandler>("qloudy.network.weather", 0, 1, "RequestHandler");
+//    qmlRegisterType<requestHandler>("qloudy.network.weather", 0, 1, "RequestHandler");
 }
 Q_COREAPP_STARTUP_FUNCTION(registerRequestHandlerType)
 }

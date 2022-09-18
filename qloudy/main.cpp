@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-// #include "requesthandler.h"
+
+#include <QFile>
 
 int main(int argc, char *argv[])
 {
@@ -9,12 +10,15 @@ int main(int argc, char *argv[])
 #endif
     QGuiApplication app(argc, argv);
 
-    app.setApplicationName("Qloudy");
-    app.setApplicationDisplayName("Qloudy");
+    app.setApplicationDisplayName("qloudy");
     app.setOrganizationDomain("https://smr76.github.io");
     app.setOrganizationName("smr");
+    app.setApplicationName("qloudy");
 
-    qmlRegisterSingletonType(QUrl("qrc:/Qloudy.qml"), "Qloudy", 0, 1, "Qloudy");
+    // Register qml files as singleton
+    qmlRegisterSingletonType(QUrl("qrc:/globals/Fonts.qml"), "qloudy.globals", 0, 1, "Fonts");
+    qmlRegisterSingletonType(QUrl("qrc:/globals/Theme.qml"), "qloudy.globals", 0, 1, "Theme");
+    qmlRegisterSingletonType(QUrl("qrc:/globals/Weather.qml"), "qloudy.globals", 0, 1, "Weather");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));

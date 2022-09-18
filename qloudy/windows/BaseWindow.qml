@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 
-import Qloudy 0.1
+import qloudy.globals 0.1
 
 import '../controls'
 
@@ -23,7 +23,7 @@ Window {
         contentItem: Text {
             width: btn.width
             text: btn.text
-            color: btn.palette.buttonText
+            color: btn.palette.windowText
             font: btn.font
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
@@ -69,7 +69,7 @@ Window {
     Rectangle {
         anchors.fill: parent
         anchors.margins: 4
-        color: '#353637'
+        color: palette.window
     }
 
     Page {
@@ -83,7 +83,7 @@ Window {
             id: header
             height: 20;
             clip: true
-            color: "#353637";
+            color: palette.window;
 
             MouseArea {
                 anchors.fill: parent
@@ -100,7 +100,7 @@ Window {
                 Image {
                     id: logo
                     y: 4
-                    source: "qrc:/resources/icons/icon-light.svg"
+                    source: "qrc:/resources/icons/icon.svg"
                     height: parent.height - 8
                     fillMode: Image.PreserveAspectFit
                 }
@@ -109,36 +109,30 @@ Window {
                     id: title
                     height: parent.height
                     leftPadding: 3
-                    color: '#ddd'
+                    color: palette.windowText
                     text: window.title
-                    font: Qloudy.regularFont
+                    font: Fonts.regular
                     verticalAlignment: Qt.AlignVCenter
                 }
 
                 Item {
-                    width: header.width - title.width - logo.width - hideBtn.width - closeBtn.width - 4
+                    width: header.width - title.width - logo.width - minusBtn.width - closeBtn.width - 4
                     height: parent.height
                 }
 
                 HeaderButton {
-                    id: hideBtn
-                    text: '\uef9a'
-                    font: Qloudy.iconFont
-                    palette {
-                        buttonText: "#eee"
-                        button: Qt.lighter("#353637", hovered ? 1.3 : 1.0)
-                    }
+                    id: minusBtn
+                    text: '\ue004'
+                    font: Fonts.icon
+                    palette.button: Qt.lighter(window.palette.window, hovered ? 1.3 : 1.0)
                     onClicked: window.hide();
                 }
 
                 HeaderButton {
                     id: closeBtn
-                    text: '\ueee4'
-                    font: Qloudy.iconFont
-                    palette {
-                        buttonText: "#eee"
-                        button: hovered ? '#f44' : '#353637'
-                    }
+                    text: '\u0078'
+                    font: Fonts.icon
+                    palette.button: hovered ? '#f44' : window.palette.window
                     onClicked: window.close();
                 }
             }
