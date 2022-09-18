@@ -9,8 +9,8 @@ Item {
     Timer {
         id: timer
         running: control.running
-        repeat: true; interval: 45
-        onTriggered: effect.seed -= 2e-2
+        repeat: true; interval: 35
+        onTriggered: effect.seed -= 1e-2
     }
 
     ShaderEffect {

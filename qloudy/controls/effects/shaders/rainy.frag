@@ -1,4 +1,5 @@
-#version 330
+#version 130
+// Note: textureLod requires to use glsl >= v1.30
 // Reference: https://www.shadertoy.com/view/ltffzl
 varying highp vec2 qt_TexCoord0;
 
@@ -108,7 +109,15 @@ void main() {
     float layer2 = S(.0, .5, rainAmount);
 
     vec2 c = Drops(uv, seed * .2, staticDrops, layer1, layer2);
-    vec2 n = vec2(dFdx(c.x), dFdy(c.x));
+
+    #ifdef CHEAP_NORMALS
+        vec2 n = vec2(dFdx(c.x), dFdy(c.x));// cheap normals
+    #else
+        vec2 e = vec2(.001, 0.);
+        float cx = Drops(uv + e, seed * .2, staticDrops, layer1, layer2).x;
+        float cy = Drops(uv + e.yx, seed * .2, staticDrops, layer1, layer2).x;
+        vec2 n = vec2(cx-c.x, cy-c.x);		// expensive normals
+    #endif
 
     float focus = mix(maxBlur-c.y, minBlur, S(.1, .2, c.x));
     vec3 col = textureLod(source, UV+n, focus).rgb;
