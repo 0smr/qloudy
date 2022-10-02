@@ -1,5 +1,8 @@
 # <img src="extra/logo/logo.svg" width="35px"></img> Qloudy
-<img src="https://img.shields.io/badge/version-0.2.0-37c248"><br>
+<p><img src="https://img.shields.io/github/v/tag/smr76/qloudy?sort=semver&label=version&labelColor=0bd&color=07b" alt="version tag">
+<img src="https://img.shields.io/github/license/smr76/qloudy?color=36b245" alt="license">
+<a href="https://www.blockchain.com/bch/address/bitcoincash:qrnwtxsk79kv6mt2hv8zdxy3phkqpkmcxgjzqktwa3">
+<img src="https://img.shields.io/badge/BCH-Donate-f0992e?logo=BitcoinCash&logoColor=f0992e" alt="BCH donate"></a></p>
 
 Qloudy is a Qt based gui weather application which uses the [open weather map](https://openweathermap.org) free API.
 
@@ -11,10 +14,9 @@ Qloudy is a Qt based gui weather application which uses the [open weather map](h
 
 <!-- # Preview -->
 
-## Notes <sub><small>*some important notes*!!</small></sub>
-1. *You may need to set a custom **scale factor** on the environment since this app uses pixels for component size.*<br>
-   Like this: `QT_SCALE_FACTOR=2 ./qloudy`
-2. *This app might be bit buggy as it isn't yet in a stable state.*
+> **Warning**
+> + *You may need to set a custom **scale factor** on the environment since this app uses pixels for component size.* (e.g., `QT_SCALE_FACTOR=2 ./qloudy`)
+> + *This app might be bit buggy as it isn't yet in a stable state.*
 
 ## Building from source
 
@@ -70,12 +72,13 @@ tables.forEach((table, idx) => {
 - [ ] Add tooltip.
 - [ ] Add more weather condition effects.
 - [ ] Add data chart.
-- [ ] Add preview images to `README`.
+- [ ] Add preview images to README.
 - [ ] Add *contribution* note.
 - [ ] Fix scale factor.
 
 ## Dependencies
 - [Qt](https://www.qt.io) (LGPLV3) <sub>Core & GUI</sub>
 
-## References
-- [Unsplash.com](https://unsplash.com) ([Unsplash License](https://unsplash.com/license)) <sub>background images</sub>
+## Attribution
+- [Unsplash.com](https://unsplash.com) ([Unsplash License](https://unsplash.com/license)) <sub>Background Images</sub>
+- [materialdesignicons.com](https://materialdesignicons.com) (Apache 2.0) <sub>Icons</sub>
